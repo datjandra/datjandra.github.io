@@ -4,9 +4,8 @@
 <meta charset="ISO-8859-1">
 <title>Wikipedia Automated Question Answering</title>
 
-<link rel="stylesheet" href="http://textsift.com/bootstrap-3.3.6-dist/css/bootstrap.min.css">
-<link rel="stylesheet" href="http://textsift.com/font-awesome-4.5.0/css/font-awesome.min.css">
-	
+<link rel="stylesheet" href="bootstrap-3.3.6-dist/css/bootstrap.min.css">
+
 <style type="text/css">
 html,body {
 	margin: 0;
@@ -143,17 +142,11 @@ footer p {
 	margin: 130px 0 40px 0;
 	box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 4px 8px 0
 		rgba(0, 0, 0, 0.1);
-	position: relative;
 }
 
 .search-form input {
 	border: none;
 	vertical-align: middle;
-	height: 30px;
-	line-height: 18px;
-	position: absolute;
-	padding: 0 2px 0 2px;
-	border-radius: 1px;
 }
 
 .search-form input::-webkit-input-placeholder {
@@ -171,30 +164,41 @@ footer p {
 	color: #e6e6e6;
 }
 
-.search-form .btn {
-    height: 30px;
-    position: absolute;
-    right: 0;
-    top: 5px;
-    border-radius: 1px;
+.search-form button {
+	height: 32px;
+	color: #FFF;
+	vertical-align: middle;
+	text-decoration: none;
+	display: inline-block;
+	text-shadow: -1px -1px 0 rgba(0, 0, 0, 0.3);
+	font-weight: bold;
+	border: 1px solid #15aeec;
+	background-color: #49c0f0;
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#49c0f0),
+		to(#2CAFE3));
+	background-image: -webkit-linear-gradient(top, #49c0f0, #2CAFE3);
+	background-image: -moz-linear-gradient(top, #49c0f0, #2CAFE3);
+	background-image: -ms-linear-gradient(top, #49c0f0, #2CAFE3);
+	background-image: -o-linear-gradient(top, #49c0f0, #2CAFE3);
+	background-image: linear-gradient(to bottom, #49c0f0, #2CAFE3);
+	filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,
+		startColorstr=#49c0f0, endColorstr=#2CAFE3);
 }
-	
-	
-.styled-input-group .input-group-addon {
-    background: white !important; 
+
+.search-form button:hover {
+	border: 1px solid #1090c3;
+	background-color: #1ab0ec;
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#1ab0ec),
+		to(#1a92c2));
+	background-image: -webkit-linear-gradient(top, #1ab0ec, #1a92c2);
+	background-image: -moz-linear-gradient(top, #1ab0ec, #1a92c2);
+	background-image: -ms-linear-gradient(top, #1ab0ec, #1a92c2);
+	background-image: -o-linear-gradient(top, #1ab0ec, #1a92c2);
+	background-image: linear-gradient(to bottom, #1ab0ec, #1a92c2);
+	filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,
+		startColorstr=#1ab0ec, endColorstr=#1a92c2);
 }
-	
-.styledh-input-group .form-control {
-	border-right:0; 
-	box-shadow:0 0 0; 
-	border-color:#ccc;
-}
-	
-.styled-input-group button {
-    border:0;
-    background:transparent;
-}
-	
+
 #question, .edit {
 	padding-left: 8px;
 	outline: none;
@@ -227,10 +231,11 @@ footer p {
 				<div class="col-md-12 col-xs-12 center">
 					<form class="search-form control-group" id="query" name="query"
 						accept-charset="utf-8" action="">
-						<div class="input-group">
-							<input id="question" name="question" placeholder="Ask me"
-							size="64" class="form-control" />
-						</div>
+						<input id="question" name="question" placeholder="Ask me"
+							size="64" />
+						<button type="submit" id="do-search">
+							<span class="glyphicon glyphicon-search"></span>
+						</button>
 					</form>
 				</div>
 
@@ -243,7 +248,7 @@ footer p {
 				<div class="row">
 					<div id="search-div" class="col-md-12 col-xs-12 top-space">
 						<span id="wait-search" class="spinner"><img
-							src="http://vocifery.appspot.com/img/355.gif" alt="Searching ..." /><span>Searching
+							src="img/355.gif" alt="Searching ..." /><span>Searching
 								...</span></span>
 						<div id="search-result"></div>
 					</div>
@@ -255,9 +260,9 @@ footer p {
 					<div class="row">
 						<div class="col-md-4 center">
 							<h3>Description</h3>
-							<p>This is a demo of a question answering application for Wikipedia. 
-								It works by extracting features such as keywords for submission to Wikipedia search engine. 
-								Search results are transformed into a knowledge graph. 
+							<p>This is a demo of a question answering application for Wikipedia.
+								It works by extracting features such as keywords for submission to Wikipedia search engine.
+								Search results are transformed into a knowledge graph.
 								Secondary search is then performed on the knowledge graph to find the best answer.</p>
 						</div>
 
@@ -272,8 +277,8 @@ footer p {
 
 						<div class="col-md-4 center">
 							<h3>Notes</h3>
-							<p>Unlike search engines and deep question/answering systems, this system finds answers by shallow methods. 
-								As a result, breadth of question types and answer relevance is not quite at the level of big-data solutions. 
+							<p>Unlike search engines and deep question/answering systems, this system finds answers by shallow methods.
+								As a result, breadth of question types and answer relevance is not quite at the level of big-data solutions.
 								However, no pre-trained data is required as the system literally "reads" search results from Wikipedia.</p>
 						</div>
 					</div>
@@ -290,8 +295,9 @@ footer p {
 	</div>
 </body>
 
-<script src="http://textsift.com/jquery-1.11.3/jquery-1.11.3.min.js" type="text/javascript"></script>
-<script src="http://textsift.com/bootstrap-3.3.6-dist/js/bootstrap.min.js" type="text/javascript"></script>
+<script src="jquery-1.11.3/jquery-1.11.3.min.js" type="text/javascript"></script>
+<script src="bootstrap-3.3.6-dist/js/bootstrap.min.js"
+	type="text/javascript"></script>
 <script type="text/javascript">
 	var request;
 	var wikipediaBaseUrl = "http://en.wikipedia.org/wiki/";
@@ -401,7 +407,7 @@ footer p {
 									var title = pages[id].title;
 									var extract = pages[id].extract;
 									indexedSnippets[title] = extract;
-									
+
 									var posting = $.post(extractUrl, {
 										context : title,
 										text : extract
@@ -428,7 +434,7 @@ footer p {
 												var relations = response.relations;
 												var allNodes = {};
 												var answerFound = false;
-												
+
 												while (fringe.length > 0
 														&& answerFound == false) {
 													var node = fringe.shift();
@@ -443,7 +449,7 @@ footer p {
 															mappedEntities,
 															relations, node);
 													for (var j = 0; j < successors.length; j++) {
-														var successor = successors[j];	
+														var successor = successors[j];
 														var successorString = JSON
 																.stringify(successor);
 														if (!(successorString in allNodes)) {
