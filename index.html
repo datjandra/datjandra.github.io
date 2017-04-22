@@ -143,11 +143,16 @@ footer p {
 	margin: 130px 0 40px 0;
 	box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 4px 8px 0
 		rgba(0, 0, 0, 0.1);
+	position: relative;
 }
 
 .search-form input {
 	border: none;
 	vertical-align: middle;
+	height: 30px;
+	positiOn: absolute;
+	padding: 0 2px 0 2px;
+	border-radius: 1px;
 }
 
 .search-form input::-webkit-input-placeholder {
@@ -165,6 +170,15 @@ footer p {
 	color: #e6e6e6;
 }
 
+.search-form .btn {
+    height: 30px;
+    position: absolute;
+    right: 0;
+    top: 5px;
+    border-radius: 1px;
+}
+	
+	
 .styled-input-group .input-group-addon {
     background: white !important; 
 }
