@@ -1,13 +1,579 @@
 <!DOCTYPE html>
 <html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Wikipedia Automated Question Answering</title>
+
+<link rel="stylesheet" href="http://vocifery.appspot.com/bootstrap-3.3.5-dist/css/bootstrap.css">
+
+<style type="text/css">
+html,body {
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	height: 100%;
+	font-family: 'Roboto', sans-serif;
+	background: #f5f5f5;
+	margin: 0 auto;
+	-webkit-font-smoothing: antialiased;
+	-moz-font-smoothing: antialiased;
+	font-smoothing: antialiased;
+}
+
+/* Large desktop */
+@media ( min-width : 980px) {
+	body {
+		padding-top: 60px;
+	}
+	.linediv-l {
+		border-right: 1px white solid;
+	}
+	.linediv-r {
+		border-left: 1px white solid;
+	}
+}
+
+/* Landscape phones and down */
+@media ( max-width : 480px) {
+	.copy {
+		padding: 2.5% 10%;
+	}
+	.linediv-l {
+		border-bottom: 1px white solid;
+	}
+	.linediv-r {
+		border-top: 1px white solid;
+	}
+}
+
+.spinner span {
+	padding-left: 20px;
+}
+
+.detail {
+	margin-bottom: 32px;
+	padding: 14px;
+}
+
+.detail h3 {
+	letter-spacing: -1px;
+	line-height: 1.25;
+	margin: 8px 0px 8px 0px;
+	text-align: center;
+}
+
+.detail p {
+	font-size: 14px;
+	line-height: 1.5;
+}
+
+.detail ul {
+	list-style-type: none;
+}
+
+.detail li {
+	font-size: 14px;
+	line-height: 1.5;
+}
+
+#wrapper {
+	min-height: 100%;
+	position: relative;
+}
+
+footer {
+	width: 100%;
+	position: relative;
+	left: 0;
+	bottom: 0;
+	text-align: center;
+}
+
+footer a {
+	color: #FFD54F;
+}
+
+footer a:hover {
+	color: #FFA000;
+	text-decoration: none;
+}
+
+footer p {
+	font-size: 12px;
+}
+
+.top-space {
+	margin-top: 16px;
+}
+
+#search-result {
+	overflow: auto;
+}
+
+#search-result ul {
+	list-style-type: none;
+}
+
+#search-result li {
+	margin-left: 16%;
+	margin-right: 16%;
+	padding-bottom: 20px;
+}
+
+#answer-box {
+	text-align: justify;
+	width: auto;
+	margin-left: 16%;
+	margin-right: 16%;
+	padding: 16px;
+	position: relative;
+	background: #FFF;
+	box-shadow: 0px 1px 2px rgba(43, 59, 93, 0.1);
+	display: none;
+}
+
+.search-form {
+	font-size: 18px;
+	vertical-align: middle;
+	display: inline-block;
+	background: #fff;
+	margin: 130px 0 40px 0;
+	box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 4px 8px 0
+		rgba(0, 0, 0, 0.1);
+}
+
+.search-form input {
+	border: none;
+	vertical-align: middle;
+}
+
+.search-form input::-webkit-input-placeholder {
+	font-weight: 300;
+	color: #e6e6e6;
+}
+
+.search-form input::-moz-placeholder {
+	font-weight: 300;
+	color: #e6e6e6;
+}
+
+.search-form input::input-placeholder {
+	font-weight: 300;
+	color: #e6e6e6;
+}
+
+.search-form button {
+	height: 32px;
+	color: #FFF;
+	vertical-align: middle;
+	text-decoration: none;
+	display: inline-block;
+	text-shadow: -1px -1px 0 rgba(0, 0, 0, 0.3);
+	font-weight: bold;
+	border: 1px solid #15aeec;
+	background-color: #49c0f0;
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#49c0f0),
+		to(#2CAFE3));
+	background-image: -webkit-linear-gradient(top, #49c0f0, #2CAFE3);
+	background-image: -moz-linear-gradient(top, #49c0f0, #2CAFE3);
+	background-image: -ms-linear-gradient(top, #49c0f0, #2CAFE3);
+	background-image: -o-linear-gradient(top, #49c0f0, #2CAFE3);
+	background-image: linear-gradient(to bottom, #49c0f0, #2CAFE3);
+	filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,
+		startColorstr=#49c0f0, endColorstr=#2CAFE3);
+}
+
+.search-form button:hover {
+	border: 1px solid #1090c3;
+	background-color: #1ab0ec;
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#1ab0ec),
+		to(#1a92c2));
+	background-image: -webkit-linear-gradient(top, #1ab0ec, #1a92c2);
+	background-image: -moz-linear-gradient(top, #1ab0ec, #1a92c2);
+	background-image: -ms-linear-gradient(top, #1ab0ec, #1a92c2);
+	background-image: -o-linear-gradient(top, #1ab0ec, #1a92c2);
+	background-image: linear-gradient(to bottom, #1ab0ec, #1a92c2);
+	filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,
+		startColorstr=#1ab0ec, endColorstr=#1a92c2);
+}
+
+#question, .edit {
+	padding-left: 8px;
+	outline: none;
+}
+
+.center {
+	text-align: center;
+}
+
+#do-search span {
+	display: block;
+}
+</style>
+
+</head>
 <body>
+	<div id="wrapper">
+		<header>
+			<nav class="navbar navbar-inverse navbar-fixed-top">
+				<div class="container-fluid">
+					<ul class="nav navbar-nav navbar-left">
+						<li><a href="http://vocifery.com">Vocifery</a></li>
+					</ul>
+				</div>
+			</nav>
+		</header>
 
-<h1>What Can JavaScript Do?</h1>
+		<div id="main">
+			<div class="row">
+				<div class="col-md-12 col-xs-12 center">
+					<form class="search-form control-group" id="query" name="query"
+						accept-charset="utf-8" action="">
+						<input id="question" name="question" placeholder="Ask me"
+							size="64" />
+						<button type="submit" id="do-search">
+							<span class="glyphicon glyphicon-search"></span>
+						</button>
+					</form>
+				</div>
 
-<p id="demo">JavaScript can change HTML content.</p>
+				<div class="row">
+					<div class="col-md-12 col-xs-12 center">
+						<div id="answer-box"></div>
+					</div>
+				</div>
 
-<button type="button" onclick='document.getElementById("demo").innerHTML = "Hello JavaScript!"'>Click Me!</button>
+				<div class="row">
+					<div id="search-div" class="col-md-12 col-xs-12 top-space">
+						<span id="wait-search" class="spinner"><img
+							src="http://vocifery.appspot.com/img/355.gif" alt="Searching ..." /><span>Searching
+								...</span></span>
+						<div id="search-result"></div>
+					</div>
+				</div>
+			</div>
 
+			<footer>
+				<div class="container detail">
+					<div class="row">
+						<div class="col-md-4 center">
+							<h3>Description</h3>
+							<p>This is a demo of a question answering application for Wikipedia. 
+								It works by extracting features such as keywords for submission to Wikipedia search engine. 
+								Search results are transformed into a knowledge graph. 
+								Secondary search is then performed on the knowledge graph to find the best answer.</p>
+						</div>
+
+						<div class="col-md-4 center">
+							<h3>Sample Questions</h3>
+							<ul>
+								<li>Who assassinated Julius Caesar?</li>
+								<li>Who did Kate Middleton marry?</li>
+								<li>How fast is the speed of sound?</li>
+							</ul>
+						</div>
+
+						<div class="col-md-4 center">
+							<h3>Notes</h3>
+							<p>Unlike search engines and deep question/answering systems, this system finds answers by shallow methods. 
+								As a result, breadth of question types and answer relevance is not quite at the level of big-data solutions. 
+								However, no pre-trained data is required as the system literally "reads" search results from Wikipedia.</p>
+						</div>
+					</div>
+				</div>
+
+				<p class="text-muted">
+					This work is licensed under the <a
+						href="http://creativecommons.org/licenses/by-sa/3.0/">CC By-SA
+						3.0 </a>, without all the cruft that would otherwise be put at the
+					bottom of the page.
+				</p>
+			</footer>
+		</div>
+	</div>
 </body>
-</html>
 
+<script src="http://vocifery.appspot.com/jquery-2.1.4/jquery-2.1.4.min.js" type="text/javascript"></script>
+<script src="http://vocifery.appspot.com/bootstrap-3.3.5-dist/js/bootstrap.min.js"
+	type="text/javascript"></script>
+<script type="text/javascript">
+	var request;
+	var wikipediaBaseUrl = "http://en.wikipedia.org/wiki/";
+	var wikipediaSearchUrl = "https://en.wikipedia.org/w/api.php?action=query&list=search&format=json&srsearch=";
+	var wikipediaTextUrl = "https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro=&explaintext=&titles=";
+	var vociferyBase = "http://realitywarp-vocifery.rhcloud.com/api/v0";
+	var askUrl = vociferyBase + "/parse/question";
+	var thinkUrl = vociferyBase + "/think";
+	var pingUrl = vociferyBase + "/ping";
+	var extractUrl = vociferyBase + "/text/extract/triplets";
+	var answerContext = null;
+	var exclude = {};
+	var articleRank;
+
+	$("#search-div").hide();
+	$("#wait-parse").show();
+
+	$.get(pingUrl, function(data) {
+		console.log(data);
+	});
+
+	function fireEvent(event, input, url, task) {
+		return task(event, input, url);
+	}
+
+	function isEmpty(str) {
+		return (!str || 0 === str.length);
+	}
+
+	var goalTest = function(node, title, bestAnswer) {
+		var answerTypePos = answerContext.ANSWER_TYPE_POS;
+		var subjectPos = node.SUBJECT_POS;
+		var objectPos = node.OBJECT_POS;
+
+		if (answerTypePos) {
+			var answerPos = answerTypePos.split("|");
+			for (var i = 0; i < answerPos.length; i++) {
+				if (subjectPos) {
+					var pos = subjectPos.split(" ");
+					for (var j = 0; j < pos.length; j++) {
+						if (answerPos[i] == pos[j]) {
+							if (!(node.SUBJECT.toLowerCase() in exclude)) {
+								bestAnswer.value = node.SUBJECT;
+								bestAnswer.title = title;
+								return true;
+							}
+						}
+					}
+				} else if (objectPos) {
+					var pos = objectPos.split(" ");
+					for (var j = 0; j < pos.length; j++) {
+						if (answerPos[i] == pos[j]) {
+							if (!(node.OBJECT.toLowerCase() in exclude)) {
+								bestAnswer.value = node.OBJECT;
+								bestAnswer.title = title;
+								return true;
+							}
+						}
+					}
+				}
+			}
+		}
+		return false;
+	}
+
+	var expand = function(mappedEntities, relations, node) {
+		var successors = [];
+		for (var i = 0; i < relations.length; i++) {
+			var relation = relations[i];
+			for (var j = 0; j < relation.edges.length; j++) {
+				var edge = relation.edges[j];
+				var subject = mappedEntities[edge.subject];
+				var object = mappedEntities[edge.object];
+				var successor = null;
+
+				if (object.value == node.OBJECT || object.value == node.SUBJECT
+						|| subject.value == node.SUBJECT
+						|| subject.value == node.OBJECT) {
+					successor = {};
+					successor.SUBJECT = subject.value;
+					successor.SUBJECT_POS = subject.parts_of_speech;
+					successor.PREDICATE = relation.relation;
+					successor.OBJECT = object.value;
+					successor.OBJECT_POS = object.parts_of_speech;
+				}
+
+				if (successor) {
+					successors.push(successor);
+				}
+			}
+		}
+		return successors;
+	}
+
+	var seekAnswers = function(event, input, wikipediaLinks) {
+		var indexedSnippets = {};
+		var rankedAnswers = [];
+		var hitCount = wikipediaLinks.length;
+		for (var i = 0; i < hitCount; i++) {
+			var link = wikipediaLinks[i];
+			$
+					.getJSON(
+							link + "&callback=?",
+							function(result) {
+								var pages = result.query.pages;
+								for (id in pages) {
+									var title = pages[id].title;
+									var extract = pages[id].extract;
+									indexedSnippets[title] = extract;
+									
+									var posting = $.post(extractUrl, {
+										context : title,
+										text : extract
+									});
+
+									posting
+											.done(function(response) {
+												var bestAnswer = {};
+												var query = {};
+												query.SUBJECT = null;
+												query.PREDICATE = answerContext.ACTION;
+												query.OBJECT = answerContext.FOCUS
+														.replace(" ", "_");
+
+												var fringe = [];
+												fringe.push(query);
+
+												var entities = response.entities;
+												var mappedEntities = {};
+												for (var j = 0; j < entities.length; j++) {
+													mappedEntities[entities[j].id] = entities[j];
+												}
+
+												var relations = response.relations;
+												var allNodes = {};
+												var answerFound = false;
+												
+												while (fringe.length > 0
+														&& answerFound == false) {
+													var node = fringe.shift();
+													answerFound = goalTest(
+															node, title,
+															bestAnswer);
+													if (answerFound == true) {
+														break;
+													}
+
+													var successors = expand(
+															mappedEntities,
+															relations, node);
+													for (var j = 0; j < successors.length; j++) {
+														var successor = successors[j];	
+														var successorString = JSON
+																.stringify(successor);
+														if (!(successorString in allNodes)) {
+															allNodes[successorString] = true;
+															fringe
+																	.push(successor);
+														}
+													}
+												}
+
+												if (bestAnswer.value) {
+													var score = (hitCount - articleRank[response.context])
+															/ (hitCount + 1);
+													var candidate = {};
+													candidate.key = bestAnswer.value;
+													candidate.title = bestAnswer.title;
+													candidate.score = score;
+													rankedAnswers.push(candidate);
+
+													rankedAnswers = rankedAnswers
+															.sort(function(
+																	first,
+																	second) {
+																return second.score
+																		- first.score;
+															});
+													$("#answer-box")
+															.text(
+																	indexedSnippets[rankedAnswers[0].title]);
+													$("#answer-box").show();
+												}
+											});
+								}
+							});
+		}
+	}
+
+	function fetchItemContents(event, url, input) {
+		$.getJSON(url + "&callback=?", function(result) {
+			var searchResults = $("#search-result");
+			searchResults.empty().html("<ul>");
+			var searchResultsList = searchResults.find("ul");
+			var wikipediaLinks = [];
+
+			articleRank = {};
+			var hits = result.query.search;
+			var hitCount = hits.length;
+			for (var i = 0; i < hitCount; i++) {
+				var hit = hits[i];
+				var title = hit.title.replace("/\s/g", "_");
+				articleRank[title] = i;
+			}
+
+			for (var i = 0; i < hitCount; i++) {
+				var hit = hits[i];
+				var url = wikipediaBaseUrl + hit.title.replace("/\s/g", "_");
+				searchResultsList.append("<li><a href='" + url + "'>"
+						+ hit.title + "</a><br/>" + hit.snippet + "</li>");
+				wikipediaLinks.push(wikipediaTextUrl + hit.title);
+			}
+			searchResultsList.append("</ul>");
+
+			$("#wait-search").hide();
+			$("#search-div").show();
+			fireEvent(event, input, wikipediaLinks, seekAnswers);
+		});
+	}
+
+	var fetchContent = function(event, input, url) {
+		fetchItemContents(event, url, input);
+	}
+
+	var askQuestion = function(event, input, url) {
+		if (request) {
+			request.abort();
+		}
+		event.preventDefault();
+
+		$("#search-div").hide();
+		$("#answer-box").hide();
+		$("#answer-box").empty();
+		var posting = $.post(url, {
+			question : input
+		});
+
+		posting
+				.done(function(response) {
+					answerContext = response;
+					console.log("answer context "
+							+ JSON.stringify(answerContext));
+
+					exclude = {};
+					if (answerContext.FOCUS) {
+						exclude[answerContext.FOCUS.replace(" ", "_")
+								.toLowerCase()] = true;
+					}
+					if (answerContext.ACTION) {
+						exclude[answerContext.ACTION.replace(" ", "_")
+								.toLowerCase()] = true;
+					}
+					if (answerContext.TARGET) {
+						var words = answerContext.TARGET.split("|");
+						for (var i = 0; i < words.length; i++) {
+							exclude[words[i].replace(" ", "_").toLowerCase()] = true;
+						}
+					}
+					if (answerContext.QUALIFIERS) {
+						var words = answerContext.QUALIFIERS.split("|");
+						for (var i = 0; i < words.length; i++) {
+							exclude[words[i].replace(" ", "_").toLowerCase()] = true;
+						}
+					}
+
+					var keywords = response.KEYWORDS;
+					var fetchUrl = wikipediaSearchUrl
+							+ encodeURIComponent(keywords);
+					fireEvent(event, response, fetchUrl, fetchContent);
+				});
+	}
+
+	$("#query").submit(function(event) {
+		var input = $("#question").val();
+		fireEvent(event, input, askUrl, askQuestion);
+		return false;
+	})
+</script>
+</html>
