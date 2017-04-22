@@ -165,42 +165,20 @@ footer p {
 	color: #e6e6e6;
 }
 
-	/*
-.search-form button {
-	height: 32px;
-	color: #FFF;
-	vertical-align: middle;
-	text-decoration: none;
-	display: inline-block;
-	text-shadow: -1px -1px 0 rgba(0, 0, 0, 0.3);
-	font-weight: bold;
-	border: 1px solid #15aeec;
-	background-color: #49c0f0;
-	background-image: -webkit-gradient(linear, left top, left bottom, from(#49c0f0),
-		to(#2CAFE3));
-	background-image: -webkit-linear-gradient(top, #49c0f0, #2CAFE3);
-	background-image: -moz-linear-gradient(top, #49c0f0, #2CAFE3);
-	background-image: -ms-linear-gradient(top, #49c0f0, #2CAFE3);
-	background-image: -o-linear-gradient(top, #49c0f0, #2CAFE3);
-	background-image: linear-gradient(to bottom, #49c0f0, #2CAFE3);
-	filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,
-		startColorstr=#49c0f0, endColorstr=#2CAFE3);
+.styled-input-group .input-group-addon {
+    background: white !important; 
 }
-
-.search-form button:hover {
-	border: 1px solid #1090c3;
-	background-color: #1ab0ec;
-	background-image: -webkit-gradient(linear, left top, left bottom, from(#1ab0ec),
-		to(#1a92c2));
-	background-image: -webkit-linear-gradient(top, #1ab0ec, #1a92c2);
-	background-image: -moz-linear-gradient(top, #1ab0ec, #1a92c2);
-	background-image: -ms-linear-gradient(top, #1ab0ec, #1a92c2);
-	background-image: -o-linear-gradient(top, #1ab0ec, #1a92c2);
-	background-image: linear-gradient(to bottom, #1ab0ec, #1a92c2);
-	filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,
-		startColorstr=#1ab0ec, endColorstr=#1a92c2);
+	
+.styledh-input-group .form-control {
+	border-right:0; 
+	box-shadow:0 0 0; 
+	border-color:#ccc;
 }
-*/
+	
+.styled-input-group button {
+    border:0;
+    background:transparent;
+}
 	
 #question, .edit {
 	padding-left: 8px;
@@ -234,7 +212,7 @@ footer p {
 				<div class="col-md-12 col-xs-12 center">
 					<form class="search-form control-group" id="query" name="query"
 						accept-charset="utf-8" action="">
-						<div class="input-group">
+						<div class="input-group styled-input-group">
 							<input id="question" name="question" placeholder="Ask me"
 							size="64" class="form-control" />
 							<span class="input-group-addon">
