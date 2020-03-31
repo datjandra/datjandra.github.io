@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width">
+                <title>Video Hero 🦸‍♂️</title>
+                <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+                    <style>
+                        .homepage-hero-module {
+                        border-right: none;
+                        border-left: none;
+                        position: relative;
+                        }
+                        .no-video .video-container video,
+                        .touch .video-container video {
+                        display: none;
+                        }
+                        .no-video .video-container .poster,
+                        .touch .video-container .poster {
+                        display: block !important;
+                        }
+                        .video-container {
+                        position: relative;
+                        bottom: 0%;
+                        left: 0%;
+                        height: 100%;
+                        width: 100%;
+                        overflow: hidden;
+                        background: #000;
+                        }
+                        .video-container .poster img {
+                        width: 100%;
+                        bottom: 0;
+                        position: absolute;
+                        }
+                        .video-container .filter {
+                        z-index: 100;
+                        position: absolute;
+                        background: rgba(0, 0, 0, 0.4);
+                        width: 100%;
+                        }
+                        .video-container video {
+                        position: absolute;
+                        z-index: 0;
+                        bottom: 0;
+                        }
+                        .video-container video.fillWidth {
+                        width: 100%;
+                        }
+                    </style>
+                </head>
+                <body>
+                    <div class="jumbotron">
+                        <h1 class="display-4">Video Hero 🦸‍♀️</h1>
+                        <p class="lead">A simple tool to create video funnels.</p>
+                    </div>
+                    <div class="homepage-hero-module">
+                        <div class="video-container">
+                            <video autoplay muted loop playsinline src="assets/mp4_coverr-amalfi-coast-1570371443102.mp4" class="fillWidth">
+                                Sorry, your browser doesn't support embedded videos.
+                            </video>
+                            <div class="poster hidden">
+                                <!--
+                  <img src="assets/coverr-amalfi-coast-1570371443102.jpg" alt="">
+                  -->
+                            </div>
+                        </div>
+                    </div>
+                    <form class="form-inline justify-content-center m-2">
+                        <div class="input-group mb-2 mr-sm-4">
+                            <input type="text" class="form-control mb-2 mr-sm-2" id="query" placeholder="Video category"/> 
+                        </div>
+                        <span class="gl-formats mb-2 mr-sm-4">
+                            <span class="wave-video-button small default"
+                                    data-video-format="youtube_horizontal"
+                                    data-publish-callback="onWavePublish">Make video</span>
+                        </span>
+                        <button id="video-link" class="btn btn-link mb-2" disabled>
+                            Download video</button>
+                    </form>
+                </body>
+                <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+                <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+                <script>
+                    (function (d,w,e,c,a) {
+                    var cf = w[c] = w[c] || {}; cf.apiKey = a;
+                    var sc=d.createElement(e),s=d.getElementsByTagName(e)[0];
+                    sc.async=!0;
+                    sc.src=cf.embed || 'https://wave.video/editor/embed.js';
+                    s.parentNode.insertBefore(sc, s);
+                    })(document, window, 'script', 'waveconfig', '9d69ee5d3709064993908c21');
+
+                    $('.wave-video-button').on('click', function() {
+                    $('.homepage-hero-module').hide();
+                    });
+
+                    function onWavePublish(button, result, error) {
+                    if (error) {
+                    console.log(error);
+                    } else {
+                    if (result.videoUrl) {
+                    videoElement = $("<video/>", {
+                    src: result.videoUrl,
+                    autoplay: true
+                    });
+
+                    $("#video-link").click(function () {
+                    window.open(
+                    result.videoUrl,
+                    "_blank"
+                    );
+                    return false;
+                    });
+                    $("#video-link").removeAttr("disabled");
+                    }
+                    }
+                    $('.homepage-hero-module').show();
+                    };
+                </script>
+                <script>
+                    // jQuery is required to run this code
+                    $( document ).ready(function() {
+                    scaleVideoContainer();
+
+                    initBannerVideoSize('.video-container .poster img');
+                    initBannerVideoSize('.video-container .filter');
+                    initBannerVideoSize('.video-container video');
+
+                    $(window).on('resize', function() {
+                    scaleVideoContainer();
+                    scaleBannerVideoSize('.video-container .poster img');
+                    scaleBannerVideoSize('.video-container .filter');
+                    scaleBannerVideoSize('.video-container video');
+                    });
+                    });
+
+                    function scaleVideoContainer() {
+                    var height = $(window).height() + 5;
+                    var unitHeight = parseInt(height) + 'px';
+                    $('.homepage-hero-module').css('height',unitHeight);
+                    }
+
+                    function initBannerVideoSize(element){
+                    $(element).each(function(){
+                    $(this).data('height', $(this).height());
+                    $(this).data('width', $(this).width());
+                    });
+
+                    scaleBannerVideoSize(element);
+                    }
+
+                    function scaleBannerVideoSize(element) {
+                    var windowWidth = $(window).width(),
+                    windowHeight = $(window).height() + 5,
+                    videoWidth,
+                    videoHeight;
+
+                    $(element).each(function(){
+                    var videoAspectRatio = $(this).data('height')/$(this).data('width');
+
+                    $(this).width(windowWidth);
+
+                    if(windowWidth < 1000){
+                            videoHeight = windowHeight;
+                            videoWidth = videoHeight / videoAspectRatio;
+                            $(this).css({'margin-top' : 0, 'margin-left' : -(videoWidth - windowWidth) / 2 + 'px'});
+
+                            $(this).width(videoWidth).height(videoHeight);
+                            }
+
+                            $('.homepage-hero-module .video-container video').addClass('fadeIn animated');
+                            });
+                            }   
+    </script>
+</html>
