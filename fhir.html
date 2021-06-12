@@ -16,19 +16,13 @@
   .starter-template {
     padding: 3rem 1.5rem;
   }
-  
-  #locations a.collapsed {
-    font-size: 0;
-  }  
     
-  #locations a.collapsed::after {
+  #locations a.collapsed:before {
     content: '+ Show More';
-    font-size: 1rem;
   }
 
-  #locations a:not(.collapsed)::after {
+  #locations a:before {
     content: '- Show Less';
-    font-size: 1rem;
   }
   </style>
 </head>
@@ -66,7 +60,7 @@
           <li>Medstar Washington Hospital Center, Washington, District of Columbia, United States</li>
           <liUniversity of Florida-Jacksonville, Jacksonville, Florida, United States</li>
         </div>
-        <li><a href="#" data-toggle="collapse" data-target="#collapseLocations" aria-expanded="false" aria-controls="collapseLocations"></a></li>
+        <li><a class="collapsed" href="#" data-toggle="collapse" data-target="#collapseLocations" aria-expanded="false" aria-controls="collapseLocations"></a></li>
       </ul>
 
       <h5>If you're interested in this clinical trial, discuss with your doctor.</h5>
