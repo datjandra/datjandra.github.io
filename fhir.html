@@ -16,13 +16,19 @@
   .starter-template {
     padding: 3rem 1.5rem;
   }
+  
+  #locations a.collapsed {
+    font-size: 0;
+  }  
     
   #locations a.collapsed::after {
     content: '+ Show More';
+    font-size: 1rem;
   }
 
   #locations a:not(.collapsed)::after {
     content: '- Show Less';
+    font-size: 1rem;
   }
   </style>
 </head>
