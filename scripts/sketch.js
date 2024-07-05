@@ -17,11 +17,11 @@ function setup() {
   video.size(width, height);
   video.hide();
 
-  select('#startButton').mousePressed(startWebcam);
+  select('#startButton').mousePressed(startDetect);
   select('#exerciseDropdown').changed(selectExercise);
 }
 
-function startWebcam() {
+function startDetect() {
   // Start detecting poses in the webcam video
   bodyPose.detectStart(video, gotPoses);
   //get the skeleton connection information
