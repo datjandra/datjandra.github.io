@@ -1,20 +1,20 @@
+let bodySegmentation;
 let video;
-let bodyPose;
-let poses = [];
-let connections;
+let segmentation;
+let options = {
+  maskType: "parts",
+};
 let selectedExercise = 'squat';
 
 function preload() {
-  // Load the bodyPose model
-  bodyPose = ml5.bodyPose();
+  bodySegmentation = ml5.bodySegmentation("BodyPix", options);
 }
 
 function setup() {
   createCanvas(640, 480);
-
-  // Create the video and hide it
+  // Create the video
   video = createCapture(VIDEO);
-  video.size(width, height);
+  video.size(640, 480);
   video.hide();
 
   select('#startButton').mousePressed(startDetect);
@@ -22,10 +22,7 @@ function setup() {
 }
 
 function startDetect() {
-  // Start detecting poses in the webcam video
-  bodyPose.detectStart(video, gotPoses);
-  //get the skeleton connection information
-  connections = bodyPose.getSkeleton();
+  bodySegmentation.detectStart(video, gotResults);
 }
 
 function selectExercise() {
@@ -33,43 +30,14 @@ function selectExercise() {
 }
 
 function draw() {
-  // Draw the webcam video
-  image(video, 0, 0, width, height);
-
-  //draw the skeleton connections
-  for (let i = 0; i < poses.length; i++) {
-    let pose = poses[i];
-    for (let j = 0; j < connections.length; j++) {
-      let pointAIndex = connections[j][0];
-      let pointBIndex = connections[j][1];
-      let pointA = pose.keypoints[pointAIndex];
-      let pointB = pose.keypoints[pointBIndex];
-      // Only draw a line if both points are confident enough
-      if (pointA.score > 0.1 && pointB.score > 0.1) {
-        stroke(255, 0, 0);
-        strokeWeight(2);
-        line(pointA.x, pointA.y, pointB.x, pointB.y);
-      }
-    }
-  }
-
-  // Draw all the tracked landmark points
-  for (let i = 0; i < poses.length; i++) {
-    let pose = poses[i];
-    for (let j = 0; j < pose.keypoints.length; j++) {
-      let keypoint = pose.keypoints[j];
-      // Only draw a circle if the keypoint's confidence is bigger than 0.1
-      if (keypoint.score > 0.1) {
-        fill(0, 255, 0);
-        noStroke();
-        circle(keypoint.x, keypoint.y, 10);
-      }
-    }
+  background(255);
+  image(video, 0, 0);
+  if (segmentation) {
+    image(segmentation.mask, 0, 0, width, height);
   }
 }
 
-// Callback function for when bodyPose outputs data
-function gotPoses(results) {
-  // Save the output to the poses variable
-  poses = results;
+// callback function for body segmentation
+function gotResults(result) {
+  segmentation = result;
 }
