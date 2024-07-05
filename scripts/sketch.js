@@ -2,6 +2,7 @@ let video;
 let bodyPose;
 let poses = [];
 let connections;
+let selectedExercise = 'squat';
 
 function preload() {
   // Load the bodyPose model
@@ -16,10 +17,19 @@ function setup() {
   video.size(width, height);
   video.hide();
 
+  select('#startButton').mousePressed(startWebcam);
+  select('#exerciseDropdown').changed(selectExercise);
+}
+
+function startWebcam() {
   // Start detecting poses in the webcam video
   bodyPose.detectStart(video, gotPoses);
   //get the skeleton connection information
   connections = bodyPose.getSkeleton();
+}
+
+function selectExercise() {
+  selectedExercise = select('#exerciseDropdown').value();
 }
 
 function draw() {
