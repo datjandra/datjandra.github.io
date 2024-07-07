@@ -63,4 +63,5 @@ function draw() {
 
 function gotPoses(results) {
   poses = results;
+  console.log('gotPoses');
 }
